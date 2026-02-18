@@ -90,7 +90,7 @@ export function HeroSection() {
           </span>
         </div>
 
-        <h1 className="font-serif text-4xl leading-tight tracking-tight text-primary-foreground sm:text-5xl md:text-6xl lg:text-7xl text-balance animate-fade-in-up animation-delay-200">
+        <h1 className="font-serif text-4xl leading-tight  font-bold  tracking-tight text-primary-foreground sm:text-5xl md:text-6xl lg:text-7xl text-balance animate-fade-in-up animation-delay-200">
           {isAr
             ? "نبني التميز. ونصنع الثقة."
             : "Building Excellence. Delivering Trust."}
