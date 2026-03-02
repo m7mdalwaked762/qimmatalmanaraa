@@ -4,13 +4,14 @@ import { useLanguage } from "@/components/language-provider"
 import { useScrollAnimation } from "@/hooks/use-scroll-animation"
 import { Phone, Mail, MapPin, Clock, PhoneCall, Send } from "lucide-react"
 
-const PHONE_NUMBER = "+962796995573"
+const PHONE_TEL = "+962796995573" // للـ tel:
+const PHONE_DISPLAY = "+962 7 9699 5573" // الشكل المعروض
 
 const contactItems = [
   {
     icon: Phone,
-    en: { label: "Phone", value: "+962 7 9699 5573", isPhone: true },
-    ar: { label: "الهاتف", value: "+962 7 9699 5573", isPhone: true },
+    en: { label: "Phone", value: PHONE_DISPLAY },
+    ar: { label: "الهاتف", value: PHONE_DISPLAY },
   },
   {
     icon: Mail,
@@ -64,7 +65,9 @@ export function ContactSection() {
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {contactItems.map((item) => {
             const data = isAr ? item.ar : item.en
-            const isPhone = item.en.isPhone
+
+            const isPhone = item.icon === Phone
+            const isMail = item.icon === Mail
 
             return (
               <div
@@ -81,24 +84,20 @@ export function ContactSection() {
 
                 {isPhone ? (
                   <a
-                    href={`tel:${PHONE_NUMBER}`}
-                    className="font-medium text-primary tabular-nums transition-colors hover:text-gold"
-                    dir="rtl"
-                    style={{ unicodeBidi: "bidi-override" }}
-                  >
-                    {data.value}
-                  </a>
-                ) : item.icon === Mail ? (
-                  <a
-                    href={`mailto:${data.value}`}
+                    href={`tel:${PHONE_TEL}`}
                     className="font-medium text-primary transition-colors hover:text-gold"
                   >
                     {data.value}
                   </a>
-                ) : (
-                  <p className="font-medium text-primary">
+                ) : isMail ? (
+                  <a
+                    href={`mailto:${data.value}`}
+                    className="font-medium text-primary transition-colors hover:text-gold break-all"
+                  >
                     {data.value}
-                  </p>
+                  </a>
+                ) : (
+                  <p className="font-medium text-primary">{data.value}</p>
                 )}
               </div>
             )
@@ -108,7 +107,7 @@ export function ContactSection() {
         {/* CTA Buttons */}
         <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <a
-            href={`tel:${PHONE_NUMBER}`}
+            href={`tel:${PHONE_TEL}`}
             className="inline-flex items-center gap-2 rounded-2xl bg-gold px-8 py-3.5 text-sm font-semibold text-navy transition-all hover:bg-gold/90 hover:shadow-lg"
           >
             <PhoneCall className="h-4 w-4" />
