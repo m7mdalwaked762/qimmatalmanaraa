@@ -4,11 +4,13 @@ import { useLanguage } from "@/components/language-provider"
 import { useScrollAnimation } from "@/hooks/use-scroll-animation"
 import { Phone, Mail, MapPin, Clock, PhoneCall, Send } from "lucide-react"
 
+const PHONE_NUMBER = "+962796995573"
+
 const contactItems = [
   {
     icon: Phone,
-    en: { label: "Phone", value: "+962 0 7 9699 5573" },
-    ar: { label: "الهاتف", value: "+962 0 7 9699 5573" },
+    en: { label: "Phone", value: "+962 7 9699 5573", isPhone: true },
+    ar: { label: "الهاتف", value: "+962 7 9699 5573", isPhone: true },
   },
   {
     icon: Mail,
@@ -58,9 +60,12 @@ export function ContactSection() {
             : "We are here to answer your inquiries and discuss your upcoming projects"}
         </p>
 
+        {/* Contact Cards */}
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {contactItems.map((item) => {
             const data = isAr ? item.ar : item.en
+            const isPhone = item.en.isPhone
+
             return (
               <div
                 key={data.label}
@@ -69,10 +74,32 @@ export function ContactSection() {
                 <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gold/15">
                   <item.icon className="h-6 w-6 text-gold" />
                 </div>
+
                 <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                   {data.label}
                 </h3>
-                <p className="font-medium text-primary">{data.value}</p>
+
+                {isPhone ? (
+                  <a
+                    href={`tel:${PHONE_NUMBER}`}
+                    className="font-medium text-primary tabular-nums transition-colors hover:text-gold"
+                    dir="rtl"
+                    style={{ unicodeBidi: "bidi-override" }}
+                  >
+                    {data.value}
+                  </a>
+                ) : item.icon === Mail ? (
+                  <a
+                    href={`mailto:${data.value}`}
+                    className="font-medium text-primary transition-colors hover:text-gold"
+                  >
+                    {data.value}
+                  </a>
+                ) : (
+                  <p className="font-medium text-primary">
+                    {data.value}
+                  </p>
+                )}
               </div>
             )
           })}
@@ -81,12 +108,13 @@ export function ContactSection() {
         {/* CTA Buttons */}
         <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <a
-            href="tel:+9620796995573"
-            className="inline-flex items-center gap-2 rounded-2xl bg-gold px-8 py-3.5 text-sm font-semibold text-navy transition-all hover:bg-gold/90 hover:shadow-lg" style="direction: rtl;"
+            href={`tel:${PHONE_NUMBER}`}
+            className="inline-flex items-center gap-2 rounded-2xl bg-gold px-8 py-3.5 text-sm font-semibold text-navy transition-all hover:bg-gold/90 hover:shadow-lg"
           >
             <PhoneCall className="h-4 w-4" />
             {isAr ? "اتصل الآن" : "Call Now"}
           </a>
+
           <a
             href="mailto:info@qimmatalmanara.com"
             className="inline-flex items-center gap-2 rounded-2xl border-2 border-gold px-8 py-3.5 text-sm font-semibold text-gold transition-all hover:bg-gold/10"
@@ -95,9 +123,6 @@ export function ContactSection() {
             {isAr ? "راسلنا" : "Email Us"}
           </a>
         </div>
-
-        {/* Map Placeholder */}
-        
       </div>
     </section>
   )
