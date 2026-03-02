@@ -68,9 +68,16 @@ export function Footer() {
             </h4>
             <ul className="flex flex-col gap-4">
               <li className="flex items-start gap-3 text-sm text-primary-foreground/60">
-                <Phone className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
-                <span style={{ direction: isAr ? "rtl" : "ltr" }}>+962 0 7 9699 5573</span>
-              </li>
+  <Phone className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+  <a
+    href="tel:+962796995573"
+    dir="ltr"
+    className="transition-colors hover:text-gold"
+    style={{ unicodeBidi: "embed" }}
+  >
+    +962 7 9699 5573
+  </a>
+</li>
               <li className="flex items-start gap-3 text-sm text-primary-foreground/60">
                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
                 <span>info@qimmatalmanara.com</span>
