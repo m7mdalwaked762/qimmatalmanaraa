@@ -69,7 +69,7 @@ export function Footer() {
             <ul className="flex flex-col gap-4">
               <li className="flex items-start gap-3 text-sm text-primary-foreground/60">
                 <Phone className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
-                <span style={{ direction: isAr ? "rtl" : "rtl" }}>+962 0 7 9699 5573</span>
+                <span style={{ direction: isAr ? "rtl" : "ltr" }}>+962 0 7 9699 5573</span>
               </li>
               <li className="flex items-start gap-3 text-sm text-primary-foreground/60">
                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
