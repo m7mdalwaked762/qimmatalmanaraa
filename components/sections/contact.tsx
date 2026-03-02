@@ -4,8 +4,8 @@ import { useLanguage } from "@/components/language-provider"
 import { useScrollAnimation } from "@/hooks/use-scroll-animation"
 import { Phone, Mail, MapPin, Clock, PhoneCall, Send } from "lucide-react"
 
-const PHONE_TEL = "+962796995573" // للـ tel:
-const PHONE_DISPLAY = "+962 7 9699 5573" // الشكل المعروض
+const PHONE_TEL = "+962796995573"
+const PHONE_DISPLAY = "+962 7 9699 5573"
 
 const contactItems = [
   {
@@ -42,7 +42,7 @@ export function ContactSection() {
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         }`}
       >
-        {/* Section Label */}
+
         <div className="mb-4 flex items-center justify-center gap-3">
           <div className="h-px w-12 bg-gold" />
           <span className="text-sm font-semibold uppercase tracking-widest text-gold">
@@ -61,11 +61,9 @@ export function ContactSection() {
             : "We are here to answer your inquiries and discuss your upcoming projects"}
         </p>
 
-        {/* Contact Cards */}
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {contactItems.map((item) => {
             const data = isAr ? item.ar : item.en
-
             const isPhone = item.icon === Phone
             const isMail = item.icon === Mail
 
@@ -85,7 +83,9 @@ export function ContactSection() {
                 {isPhone ? (
                   <a
                     href={`tel:${PHONE_TEL}`}
-                    className="font-medium text-primary transition-colors hover:text-gold"
+                    dir="ltr"
+                    className="font-medium text-primary transition-colors hover:text-gold ltr text-left"
+                    style={{ unicodeBidi: "embed" }}
                   >
                     {data.value}
                   </a>
@@ -104,7 +104,6 @@ export function ContactSection() {
           })}
         </div>
 
-        {/* CTA Buttons */}
         <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <a
             href={`tel:${PHONE_TEL}`}
@@ -122,6 +121,7 @@ export function ContactSection() {
             {isAr ? "راسلنا" : "Email Us"}
           </a>
         </div>
+
       </div>
     </section>
   )
