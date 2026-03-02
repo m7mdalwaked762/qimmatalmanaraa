@@ -82,7 +82,7 @@ export function ContactSection() {
         <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <a
             href="tel:+9620796995573"
-            className="inline-flex items-center gap-2 rounded-2xl bg-gold px-8 py-3.5 text-sm font-semibold text-navy transition-all hover:bg-gold/90 hover:shadow-lg"
+            className="inline-flex items-center gap-2 rounded-2xl bg-gold px-8 py-3.5 text-sm font-semibold text-navy transition-all hover:bg-gold/90 hover:shadow-lg" style="direction: rtl;"
           >
             <PhoneCall className="h-4 w-4" />
             {isAr ? "اتصل الآن" : "Call Now"}
@@ -97,16 +97,7 @@ export function ContactSection() {
         </div>
 
         {/* Map Placeholder */}
-        <div className="mt-16 overflow-hidden rounded-2xl border border-border bg-secondary">
-          <div className="flex h-64 items-center justify-center">
-            <div className="flex flex-col items-center gap-3 text-muted-foreground">
-              <MapPin className="h-10 w-10 text-gold/50" />
-              <span className="text-sm font-medium">
-                {isAr ? "موقعنا على الخريطة" : "Map Location Placeholder"}
-              </span>
-            </div>
-          </div>
-        </div>
+        
       </div>
     </section>
   )
