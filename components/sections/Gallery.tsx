@@ -113,7 +113,7 @@ export default function Gallery() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 2.5fr))",
             gap: "12px",
           }}
         >
@@ -125,7 +125,7 @@ export default function Gallery() {
                 position: "relative",
                 display: "block",
                 width: "100%",
-                height: "220px",
+                height: "460px",
                 overflow: "hidden",
                 borderRadius: "12px",
                 backgroundColor: "#0a1628",
