@@ -52,6 +52,14 @@ export default function Gallery() {
   const { isAr } = useLanguage()
   const { ref, isVisible } = useScrollAnimation()
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
 
   const close = useCallback(() => setActiveIndex(null), [])
   const next = useCallback(
@@ -96,7 +104,6 @@ export default function Gallery() {
           transform: isVisible ? "translateY(0)" : "translateY(2rem)",
         }}
       >
-        {/* Title */}
         <h2
           style={{
             textAlign: "center",
@@ -109,12 +116,13 @@ export default function Gallery() {
           {isAr ? "معرض الأعمال" : "Gallery"}
         </h2>
 
-        {/* Grid */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 2.5fr))",
-            gap: "12px",
+            gridTemplateColumns: isMobile
+              ? "repeat(auto-fill, minmax(120px, 1fr))"
+              : "repeat(auto-fill, minmax(220px, 1fr))",
+            gap: isMobile ? "8px" : "12px",
           }}
         >
           {media.map((item, i) => (
@@ -125,9 +133,9 @@ export default function Gallery() {
                 position: "relative",
                 display: "block",
                 width: "100%",
-                height: "460px",
+                aspectRatio: "960/1280",
                 overflow: "hidden",
-                borderRadius: "12px",
+                borderRadius: "8px",
                 backgroundColor: "#0a1628",
                 border: "none",
                 cursor: "pointer",
@@ -135,7 +143,6 @@ export default function Gallery() {
               }}
             >
               {item.type === "image" ? (
-                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={item.src}
                   alt={isAr ? item.ar : item.en}
@@ -160,7 +167,6 @@ export default function Gallery() {
                     playsInline
                     preload="metadata"
                   />
-                  {/* Overlay */}
                   <span
                     style={{
                       position: "absolute",
@@ -192,7 +198,6 @@ export default function Gallery() {
         </div>
       </div>
 
-      {/* Lightbox */}
       {active && (
         <div
           onClick={close}
@@ -204,20 +209,20 @@ export default function Gallery() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            padding: "1rem",
+            padding: isMobile ? "4px" : "1rem",
+            overflowY: "auto",
           }}
         >
-          {/* Close */}
           <button
             onClick={close}
             aria-label="Close"
             style={{
               position: "absolute",
-              top: "12px",
-              right: "12px",
+              top: isMobile ? "8px" : "12px",
+              right: isMobile ? "8px" : "12px",
               zIndex: 10,
-              width: "40px",
-              height: "40px",
+              width: isMobile ? "32px" : "40px",
+              height: isMobile ? "32px" : "40px",
               borderRadius: "50%",
               backgroundColor: "rgba(255,255,255,0.15)",
               border: "none",
@@ -228,64 +233,71 @@ export default function Gallery() {
               color: "white",
             }}
           >
-            <X style={{ width: "20px", height: "20px" }} />
+            <X style={{ width: "18px", height: "18px" }} />
           </button>
 
-          {/* Prev */}
-          <button
-            onClick={(e) => { e.stopPropagation(); prev() }}
-            aria-label="Previous"
-            style={{
-              position: "absolute",
-              left: "8px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              zIndex: 10,
-              width: "40px",
-              height: "40px",
-              borderRadius: "50%",
-              backgroundColor: "rgba(255,255,255,0.15)",
-              border: "none",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "white",
-            }}
-          >
-            <ChevronLeft style={{ width: "20px", height: "20px" }} />
-          </button>
+          {!isMobile && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                prev()
+              }}
+              aria-label="Previous"
+              style={{
+                position: "absolute",
+                left: "8px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                zIndex: 10,
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                backgroundColor: "rgba(255,255,255,0.15)",
+                border: "none",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "white",
+              }}
+            >
+              <ChevronLeft style={{ width: "20px", height: "20px" }} />
+            </button>
+          )}
 
-          {/* Next */}
-          <button
-            onClick={(e) => { e.stopPropagation(); next() }}
-            aria-label="Next"
-            style={{
-              position: "absolute",
-              right: "8px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              zIndex: 10,
-              width: "40px",
-              height: "40px",
-              borderRadius: "50%",
-              backgroundColor: "rgba(255,255,255,0.15)",
-              border: "none",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "white",
-            }}
-          >
-            <ChevronRight style={{ width: "20px", height: "20px" }} />
-          </button>
+          {!isMobile && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                next()
+              }}
+              aria-label="Next"
+              style={{
+                position: "absolute",
+                right: "8px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                zIndex: 10,
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                backgroundColor: "rgba(255,255,255,0.15)",
+                border: "none",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "white",
+              }}
+            >
+              <ChevronRight style={{ width: "20px", height: "20px" }} />
+            </button>
+          )}
 
-          {/* Counter */}
           <div
             style={{
               position: "absolute",
-              bottom: "16px",
+              bottom: isMobile ? "60px" : "16px",
               left: "50%",
               transform: "translateX(-50%)",
               zIndex: 10,
@@ -299,31 +311,32 @@ export default function Gallery() {
             {(activeIndex ?? 0) + 1} / {media.length}
           </div>
 
-          {/* Content */}
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              maxWidth: "900px",
+              maxWidth: "100%",
               width: "100%",
-              maxHeight: "85vh",
+              maxHeight: isMobile ? "calc(100vh - 120px)" : "85vh",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              padding: "0 52px",
+              padding: "0",
+              margin: "0 auto",
             }}
           >
             {active.type === "image" ? (
-              // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={active.src}
                 alt={isAr ? active.ar : active.en}
                 style={{
-                  maxHeight: "85vh",
+                  maxHeight: isMobile ? "calc(100vh - 120px)" : "85vh",
                   maxWidth: "100%",
                   width: "auto",
-                  borderRadius: "12px",
+                  height: "auto",
+                  borderRadius: "8px",
                   objectFit: "contain",
                   display: "block",
+                  aspectRatio: "960/1280",
                 }}
               />
             ) : (
@@ -334,15 +347,75 @@ export default function Gallery() {
                 autoPlay
                 playsInline
                 style={{
-                  maxHeight: "85vh",
+                  maxHeight: isMobile ? "calc(100vh - 120px)" : "85vh",
                   maxWidth: "100%",
                   width: "auto",
-                  borderRadius: "12px",
+                  height: "auto",
+                  borderRadius: "8px",
                   display: "block",
+                  aspectRatio: "960/1280",
                 }}
               />
             )}
           </div>
+
+          {isMobile && (
+            <div
+              style={{
+                position: "absolute",
+                bottom: "8px",
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                padding: "0 8px",
+                zIndex: 10,
+                gap: "8px",
+              }}
+            >
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  prev()
+                }}
+                aria-label="Previous"
+                style={{
+                  flex: 1,
+                  height: "40px",
+                  borderRadius: "6px",
+                  backgroundColor: "rgba(255,255,255,0.15)",
+                  border: "none",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "white",
+                }}
+              >
+                <ChevronLeft style={{ width: "18px", height: "18px" }} />
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  next()
+                }}
+                aria-label="Next"
+                style={{
+                  flex: 1,
+                  height: "40px",
+                  borderRadius: "6px",
+                  backgroundColor: "rgba(255,255,255,0.15)",
+                  border: "none",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "white",
+                }}
+              >
+                <ChevronRight style={{ width: "18px", height: "18px" }} />
+              </button>
+            </div>
+          )}
         </div>
       )}
     </section>
