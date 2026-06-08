@@ -11,15 +11,12 @@ type MediaItem =
   | { type: "video"; src: string; poster?: string; en: string; ar: string }
 
 const media: MediaItem[] = [
-  // Images
   ...Array.from({ length: 23 }, (_, i) => ({
     type: "image" as const,
     src: `/images/${i + 2}.jpeg`,
     en: `Project Image ${i + 1}`,
     ar: `صورة مشروع ${i + 1}`,
   })),
-
-  // Videos
   {
     type: "video",
     src: "/images/25.mp4",
@@ -85,30 +82,30 @@ export default function Gallery() {
   const active = activeIndex === null ? null : media[activeIndex]
 
   return (
-    <section id="gallery" className="bg-secondary py-24 lg:py-32">
+    <section id="gallery" className="bg-secondary py-16 sm:py-24 lg:py-32">
       <div
         ref={ref}
-        className={`mx-auto max-w-7xl px-6 transition-all duration-700 ${
+        className={`mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 transition-all duration-700 ${
           isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
         }`}
       >
         {/* Title */}
-        <h2 className="mb-16 text-center font-serif text-3xl font-bold text-primary sm:text-4xl">
+        <h2 className="mb-10 sm:mb-16 text-center font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">
           {isAr ? "معرض الأعمال" : "Gallery"}
         </h2>
 
         {/* Masonry Grid */}
-        <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 [&>*]:mb-4">
+        <div className="columns-1 gap-3 sm:columns-2 lg:columns-3 [&>*]:mb-3 sm:[&>*]:mb-4">
           {media.map((item, i) => (
             <button
               key={item.src}
               onClick={() => setActiveIndex(i)}
-              className="group relative block w-full break-inside-avoid overflow-hidden rounded-2xl bg-navy shadow-sm"
+              className="group relative block w-full break-inside-avoid overflow-hidden rounded-xl sm:rounded-2xl bg-navy shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
             >
               {item.type === "image" ? (
                 <Image
                   src={item.src}
-                  alt=""
+                  alt={isAr ? item.ar : item.en}
                   width={800}
                   height={600}
                   className="h-auto w-full object-contain transition-transform duration-500 group-hover:scale-105"
@@ -119,10 +116,12 @@ export default function Gallery() {
                     src={item.src}
                     className="h-auto w-full object-contain"
                     muted
+                    playsInline
+                    preload="metadata"
                   />
-                  <span className="absolute inset-0 flex items-center justify-center">
-                    <span className="flex h-16 w-16 items-center justify-center rounded-full bg-gold/90 text-navy">
-                      <Play className="h-7 w-7 fill-navy" />
+                  <span className="absolute inset-0 flex items-center justify-center bg-navy/20 group-hover:bg-navy/30 transition-colors duration-300">
+                    <span className="flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-gold/90 text-navy shadow-lg">
+                      <Play className="h-5 w-5 sm:h-7 sm:w-7 fill-navy" />
                     </span>
                   </span>
                 </>
@@ -135,15 +134,16 @@ export default function Gallery() {
       {/* Lightbox */}
       {active && (
         <div
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-navy/95 p-4"
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-navy/95 p-2 sm:p-4"
           onClick={close}
         >
           {/* Close */}
           <button
             onClick={close}
-            className="absolute right-4 top-4 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-gold hover:text-navy"
+            aria-label="Close"
+            className="absolute right-3 top-3 sm:right-4 sm:top-4 z-10 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-gold hover:text-navy transition-colors duration-200"
           >
-            <X className="h-6 w-6" />
+            <X className="h-5 w-5 sm:h-6 sm:w-6" />
           </button>
 
           {/* Prev */}
@@ -152,9 +152,10 @@ export default function Gallery() {
               e.stopPropagation()
               prev()
             }}
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-gold hover:text-navy"
+            aria-label="Previous"
+            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-gold hover:text-navy transition-colors duration-200"
           >
-            <ChevronLeft className="h-6 w-6" />
+            <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
           </button>
 
           {/* Next */}
@@ -163,28 +164,36 @@ export default function Gallery() {
               e.stopPropagation()
               next()
             }}
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-gold hover:text-navy"
+            aria-label="Next"
+            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-gold hover:text-navy transition-colors duration-200"
           >
-            <ChevronRight className="h-6 w-6" />
+            <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" />
           </button>
+
+          {/* Counter */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 rounded-full bg-white/10 px-3 py-1 text-sm text-white">
+            {(activeIndex ?? 0) + 1} / {media.length}
+          </div>
 
           {/* Content */}
           <div
-            className="flex max-h-[90vh] w-full max-w-5xl items-center justify-center"
+            className="flex max-h-[85vh] w-full max-w-5xl items-center justify-center px-10 sm:px-16"
             onClick={(e) => e.stopPropagation()}
           >
             {active.type === "image" ? (
               <img
                 src={active.src}
-                alt=""
-                className="max-h-[90vh] w-auto max-w-full rounded-2xl object-contain"
+                alt={isAr ? active.ar : active.en}
+                className="max-h-[85vh] w-auto max-w-full rounded-xl sm:rounded-2xl object-contain shadow-2xl"
               />
             ) : (
               <video
+                key={active.src}
                 src={active.src}
                 controls
                 autoPlay
-                className="max-h-[90vh] w-auto max-w-full rounded-2xl"
+                playsInline
+                className="max-h-[85vh] w-auto max-w-full rounded-xl sm:rounded-2xl shadow-2xl"
               />
             )}
           </div>
