@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import Image from "next/image"
 import { useLanguage } from "@/components/language-provider"
 import { useScrollAnimation } from "@/hooks/use-scroll-animation"
 import { Play, X, ChevronLeft, ChevronRight } from "lucide-react"
@@ -82,46 +81,108 @@ export default function Gallery() {
   const active = activeIndex === null ? null : media[activeIndex]
 
   return (
-    <section id="gallery" className="bg-secondary py-16 sm:py-24 lg:py-32">
+    <section
+      id="gallery"
+      style={{ backgroundColor: "var(--secondary)", paddingTop: "4rem", paddingBottom: "4rem" }}
+    >
       <div
         ref={ref}
-        className={`mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 transition-all duration-700 ${
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
-        }`}
+        style={{
+          maxWidth: "1280px",
+          margin: "0 auto",
+          padding: "0 1rem",
+          transition: "opacity 0.7s, transform 0.7s",
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? "translateY(0)" : "translateY(2rem)",
+        }}
       >
         {/* Title */}
-        <h2 className="mb-10 sm:mb-16 text-center font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">
+        <h2
+          style={{
+            textAlign: "center",
+            marginBottom: "2.5rem",
+            fontSize: "clamp(1.5rem, 4vw, 2.5rem)",
+            fontWeight: "bold",
+            color: "var(--primary)",
+          }}
+        >
           {isAr ? "معرض الأعمال" : "Gallery"}
         </h2>
 
-        {/* Masonry Grid */}
-        <div className="columns-1 gap-3 sm:columns-2 lg:columns-3 [&>*]:mb-3 sm:[&>*]:mb-4">
+        {/* Grid */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+            gap: "12px",
+          }}
+        >
           {media.map((item, i) => (
             <button
               key={item.src}
               onClick={() => setActiveIndex(i)}
-              className="group relative block w-full break-inside-avoid overflow-hidden rounded-xl sm:rounded-2xl bg-navy shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+              style={{
+                position: "relative",
+                display: "block",
+                width: "100%",
+                height: "220px",
+                overflow: "hidden",
+                borderRadius: "12px",
+                backgroundColor: "#0a1628",
+                border: "none",
+                cursor: "pointer",
+                padding: 0,
+              }}
             >
               {item.type === "image" ? (
-                <Image
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
                   src={item.src}
                   alt={isAr ? item.ar : item.en}
-                  width={800}
-                  height={600}
-                  className="h-auto w-full object-contain transition-transform duration-500 group-hover:scale-105"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    display: "block",
+                  }}
                 />
               ) : (
                 <>
                   <video
                     src={item.src}
-                    className="h-auto w-full object-contain"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block",
+                    }}
                     muted
                     playsInline
                     preload="metadata"
                   />
-                  <span className="absolute inset-0 flex items-center justify-center bg-navy/20 group-hover:bg-navy/30 transition-colors duration-300">
-                    <span className="flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-gold/90 text-navy shadow-lg">
-                      <Play className="h-5 w-5 sm:h-7 sm:w-7 fill-navy" />
+                  {/* Overlay */}
+                  <span
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "rgba(10,22,40,0.35)",
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: "52px",
+                        height: "52px",
+                        borderRadius: "50%",
+                        backgroundColor: "rgba(212,175,55,0.92)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Play style={{ width: "22px", height: "22px", fill: "#0a1628", color: "#0a1628" }} />
                     </span>
                   </span>
                 </>
@@ -134,57 +195,136 @@ export default function Gallery() {
       {/* Lightbox */}
       {active && (
         <div
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-navy/95 p-2 sm:p-4"
           onClick={close}
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 9999,
+            backgroundColor: "rgba(10,22,40,0.97)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "1rem",
+          }}
         >
           {/* Close */}
           <button
             onClick={close}
             aria-label="Close"
-            className="absolute right-3 top-3 sm:right-4 sm:top-4 z-10 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-gold hover:text-navy transition-colors duration-200"
+            style={{
+              position: "absolute",
+              top: "12px",
+              right: "12px",
+              zIndex: 10,
+              width: "40px",
+              height: "40px",
+              borderRadius: "50%",
+              backgroundColor: "rgba(255,255,255,0.15)",
+              border: "none",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "white",
+            }}
           >
-            <X className="h-5 w-5 sm:h-6 sm:w-6" />
+            <X style={{ width: "20px", height: "20px" }} />
           </button>
 
           {/* Prev */}
           <button
-            onClick={(e) => {
-              e.stopPropagation()
-              prev()
-            }}
+            onClick={(e) => { e.stopPropagation(); prev() }}
             aria-label="Previous"
-            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-gold hover:text-navy transition-colors duration-200"
+            style={{
+              position: "absolute",
+              left: "8px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              zIndex: 10,
+              width: "40px",
+              height: "40px",
+              borderRadius: "50%",
+              backgroundColor: "rgba(255,255,255,0.15)",
+              border: "none",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "white",
+            }}
           >
-            <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
+            <ChevronLeft style={{ width: "20px", height: "20px" }} />
           </button>
 
           {/* Next */}
           <button
-            onClick={(e) => {
-              e.stopPropagation()
-              next()
-            }}
+            onClick={(e) => { e.stopPropagation(); next() }}
             aria-label="Next"
-            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-gold hover:text-navy transition-colors duration-200"
+            style={{
+              position: "absolute",
+              right: "8px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              zIndex: 10,
+              width: "40px",
+              height: "40px",
+              borderRadius: "50%",
+              backgroundColor: "rgba(255,255,255,0.15)",
+              border: "none",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "white",
+            }}
           >
-            <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" />
+            <ChevronRight style={{ width: "20px", height: "20px" }} />
           </button>
 
           {/* Counter */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 rounded-full bg-white/10 px-3 py-1 text-sm text-white">
+          <div
+            style={{
+              position: "absolute",
+              bottom: "16px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              zIndex: 10,
+              backgroundColor: "rgba(255,255,255,0.15)",
+              color: "white",
+              borderRadius: "999px",
+              padding: "4px 14px",
+              fontSize: "14px",
+            }}
+          >
             {(activeIndex ?? 0) + 1} / {media.length}
           </div>
 
           {/* Content */}
           <div
-            className="flex max-h-[85vh] w-full max-w-5xl items-center justify-center px-10 sm:px-16"
             onClick={(e) => e.stopPropagation()}
+            style={{
+              maxWidth: "900px",
+              width: "100%",
+              maxHeight: "85vh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "0 52px",
+            }}
           >
             {active.type === "image" ? (
+              // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={active.src}
                 alt={isAr ? active.ar : active.en}
-                className="max-h-[85vh] w-auto max-w-full rounded-xl sm:rounded-2xl object-contain shadow-2xl"
+                style={{
+                  maxHeight: "85vh",
+                  maxWidth: "100%",
+                  width: "auto",
+                  borderRadius: "12px",
+                  objectFit: "contain",
+                  display: "block",
+                }}
               />
             ) : (
               <video
@@ -193,7 +333,13 @@ export default function Gallery() {
                 controls
                 autoPlay
                 playsInline
-                className="max-h-[85vh] w-auto max-w-full rounded-xl sm:rounded-2xl shadow-2xl"
+                style={{
+                  maxHeight: "85vh",
+                  maxWidth: "100%",
+                  width: "auto",
+                  borderRadius: "12px",
+                  display: "block",
+                }}
               />
             )}
           </div>
